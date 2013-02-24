@@ -49,6 +49,7 @@ gem 'twilio-ruby'
  
  group :production do 
  gem 'pg'
+ gem 'taps'
  end
 
 # To use ActiveModel has_secure_password

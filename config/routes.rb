@@ -119,7 +119,7 @@ resources :lab_specalities_masters
   
   #devise_for :admins
 
-  root :to => 'home#index'
+  root :to => 'appointment#index'
   match 'locations/doctor_search' => 'locations#doctor_search'
   match 'locations/labsearch' => 'locations#labsearch'
    match 'locations/fields' => 'locations#fields' 

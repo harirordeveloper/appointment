@@ -70,6 +70,7 @@ match 'specalities_masters/index' => 'specalities_masters#index'
 
 
 match 'doctor_flows/doctorprofile' => 'doctor_flows#doctorprofile'
+match 'doctor_flows/date_function' => 'doctor_flows#date_function'
 
     match 'clinics/droptable' => 'clinics#droptable'
     match 'clinic_flows/search' => 'clinic_flows#search'
@@ -118,7 +119,7 @@ resources :lab_specalities_masters
   
   #devise_for :admins
 
-  root :to => 'home#index'
+  root :to => 'appointment#index'
   match 'locations/doctor_search' => 'locations#doctor_search'
   match 'locations/labsearch' => 'locations#labsearch'
    match 'locations/fields' => 'locations#fields' 
