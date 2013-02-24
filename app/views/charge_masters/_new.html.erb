@@ -1,0 +1,354 @@
+
+<script type="text/javascript">
+	function calculate_discount(discount,cost_id,price_id,discount_amount_id,discount_pre_id)
+	{
+		if(document.getElementById(price_id).value!="")
+		{
+			var price_amount=parseFloat(document.getElementById(price_id).value)
+			if(discount!="")
+			{
+				document.getElementById(discount_amount_id).value=(price_amount-parseFloat(discount)).toFixed(2);
+				document.getElementById(discount_pre_id).value=((parseFloat(document.getElementById(discount_amount_id).value)*100)/price_amount).toFixed(2);
+			}
+			else
+			{
+				document.getElementById(discount_amount_id).value=0;
+				
+			}
+		}
+		else
+		{
+			alert("Please enter Price");
+			document.getElementById(discount_pre_id).value=0
+		}
+	}
+	
+	function check_amount(discount,cost_id,price_id,discount_amount_id,discount_pre_id)
+	{
+		
+		if(discount=="")
+		{
+			document.getElementById(cost_id).value=0;
+			document.getElementById(discount_amount_id).value=document.getElementById(price_id).value
+			document.getElementById(discount_pre_id).value=0
+		}
+	}
+	
+	function calculate_discount_amount_ind(id,row_id,discount)
+	{
+		if(document.getElementById(row_id+id+"c4").value!="")
+		{
+			var price_amount=parseFloat(document.getElementById(row_id+id+"c4").value)
+			if(discount!="")
+			{
+				document.getElementById(row_id+id+"c6").value=((price_amount*parseFloat(discount))/100).toFixed(2);
+				document.getElementById(row_id+id+"c7").value=(price_amount-parseFloat(document.getElementById(row_id+id+"c6").value)).toFixed(2);
+			}
+			else
+			{
+				document.getElementById(row_id+id+"c6").value=0;
+				document.getElementById(row_id+id+"c7").value=(price_amount-parseFloat(document.getElementById(row_id+id+"c6").value)).toFixed(2);
+			}
+		}
+		else
+		{
+			alert("Please enter Price");
+			document.getElementById(row_id+id+"c6").value=0
+			document.getElementById(row_id+id+"c5").value=0
+		}
+	}
+	function fill_amount(check_box_id,table_id,row_id,discount_pre_id,price_id,discount_amount_id,cost_id)
+	{
+		if(document.getElementById(check_box_id).checked)
+		{
+			var table = document.getElementById(table_id);
+			for(i=0;i<table.rows.length;i++)
+			{
+				if(document.getElementById(row_id+i+"c1").value!="" && document.getElementById(row_id+i+"c2").value!="")
+				{
+					document.getElementById(row_id+i+"c4").value=parseFloat(document.getElementById(price_id).value).toFixed(2);
+					document.getElementById(row_id+i+"c5").value=parseFloat(document.getElementById(discount_pre_id).value);
+					document.getElementById(row_id+i+"c6").value=parseFloat(document.getElementById(discount_amount_id).value).toFixed(2);
+					document.getElementById(row_id+i+"c7").value=parseFloat(document.getElementById(cost_id).value).toFixed(2);
+				}
+			}	
+		}
+		else
+		{
+			var table = document.getElementById(table_id);
+			for(i=0;i<table.rows.length;i++)
+			{
+				if(document.getElementById(row_id+i+"c1").value!="" && document.getElementById(row_id+i+"c2").value!="")
+				{
+					document.getElementById(row_id+i+"c4").value=0;
+					document.getElementById(row_id+i+"c5").value=0;
+					document.getElementById(row_id+i+"c6").value=0;
+					document.getElementById(row_id+i+"c7").value=0;
+				}
+			}	
+		}
+	}
+	
+	function fill_amount_in_child(table_id,row_id,discount_pre_id,price_id,discount_amount_id,cost_id)
+	{
+		var table = document.getElementById(table_id);
+		for(i=0;i<table.rows.length;i++)
+		{
+			if(document.getElementById(row_id+i).checked && document.getElementById(row_id+i+"c1").value!="" && document.getElementById(row_id+i+"c2").value!="")
+			{
+				document.getElementById(row_id+i+"c4").value=parseFloat(document.getElementById(price_id).value).toFixed(2);
+				document.getElementById(row_id+i+"c5").value=parseFloat(document.getElementById(discount_pre_id).value);
+				document.getElementById(row_id+i+"c6").value=parseFloat(document.getElementById(discount_amount_id).value).toFixed(2);
+				document.getElementById(row_id+i+"c7").value=parseFloat(document.getElementById(cost_id).value).toFixed(2);
+				document.getElementById(row_id+i).checked=false;
+			}
+		}	
+	}
+	
+	function check_all_check_boxs(id,table_id,row)
+	{
+		var table = document.getElementById(table_id);
+		if(document.getElementById(id).checked)
+		{
+			for(i=0;i<table.rows.length;i++)
+				document.getElementById(row+i).checked=true;
+		}
+		else
+		{
+			for(i=0;i<table.rows.length;i++)
+				document.getElementById(row+i).checked=false;
+		}
+	}
+</script>
+
+
+<script type="text/javascript">
+	function get_sub_groups(id)
+	{
+		jQuery.ajax({
+          	url: "/newlab/charge_masters/get_sub_groups/"+id,
+		     	type: "POST",
+           	success: function(result){  
+					var sub_groups=result.split("<division>")
+               document.getElementById('sub_group_name').length=0
+					var opt = document.createElement('option');
+					document.getElementById('sub_group_name').options.add(opt);
+					opt.text ="Please select"
+					opt.value="";
+					for(j=0;j<sub_groups.length-1;j++)
+					{
+						var ids=sub_groups[j].split("<sub_division>");
+						var opt = document.createElement('option');
+						document.getElementById('sub_group_name').options.add(opt);
+						opt.text =ids[0];
+						opt.value=ids[1];
+					}
+            },
+            error: function(){
+                  alert('Error occured');
+            }
+      });
+	}
+
+	function get_tests(id)
+	{
+		jQuery.ajax({
+          	url: "/newlab/charge_masters/get_tests_by_charge_master/"+id,
+		     	type: "POST",
+           	success: function(result){  
+					var test_names=result.split("<division>")
+               document.getElementById('test_name').length=0
+					var opt = document.createElement('option');
+					document.getElementById('test_name').options.add(opt);
+					opt.text ="Please select"
+					opt.value="";
+					for(j=0;j<test_names.length-1;j++)
+					{
+						var ids=test_names[j].split("<sub_division>");
+						var opt = document.createElement('option');
+						document.getElementById('test_name').options.add(opt);
+						opt.text =ids[0];
+						opt.value=ids[1];
+					}
+            },
+            error: function(){
+                  alert('Error occured');
+            }
+      });
+	}
+</script>
+<center><font color='blue'><strong>Charge Master New Record</strong></font></center>
+<% remote_form_for @charge_master, :url => {:controller=>"/newlab/charge_masters", :action => :create}, :before => "$('#creating_events').show();", :complete => "$('#creating_events').hide();" do |f| %>
+		<ul class="tabs">
+			<li><a href="#">Charge.Info</a></li>
+			<li><a href="#">Collection.Centers</a></li>
+			<li><a href="#">Referral.Info</a></li>
+		</ul>
+		<div class="panes">
+			<div>
+				<br/>
+			   <table align="center" width="75%">
+					
+			  		<tr>
+			   		<td>Branch Name<sup>*<sup></td>
+				 		<td><div class="label-field"><%= f.text_field :branch_code,:readOnly => true, :id => "branch_code" %></div></td>
+			  			<td>Branch.Loc</td>
+				 		<td><div class="label-field"><%= f.text_field :branch_location,:readOnly => true %></div></td>
+					</tr>
+			  		<tr>
+						<td>Group<sup>*<sup></td>
+						<td><div class="text-input-bg"><%= f.select :test_group_id, TestGroup.find(:all,:conditions => "branch_code='#{@person.branch_name}' and discontinued!='1'").collect{|p| [p.group_name,p.id]},{:prompt => true},{:id =>"group_name",:onChange => "if(this.value){get_sub_groups(this.value);}"} %></div></td>
+			  		 	<td>Sub Group<sup>*<sup></td>
+						<td><div class="text-input-bg"><%= f.select :test_sub_group_id,'',{:prompt => true},{:id =>"sub_group_name",:onChange => "if(this.value){get_tests(this.value);}"} %></div></td>
+					</tr>
+					<tr>
+			  			<td>Test Name<sup>*<sup></td>
+						<td><div class="text-input-bg"><%= f.select :test_master_id,'',{:prompt => true},{:id =>"test_name",:onChange => ""} %></div></td>
+						<td>Price<sup>*<sup></td>
+				 		<td><div class="label-field"><%= f.text_field :price,:id => "price",:onKeyUp => "if(this.value!=''){document.getElementById('centers_price').value=this.value;document.getElementById('referrals_price').value=this.value;} else {document.getElementById('centers_price').value=0;document.getElementById('referrals_price').value=0;}" %></div></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<table align="center" width="90%">
+					<tr>
+						<td>Type</td>
+						<td><div class="text-input-bg"><%= f.select :collection_center_type,[['Own'],['Client']],{:prompt => true},{:id =>"test_name",:onChange => ""} %></div></td>
+						<th colspan="2" style="color:blue;"><u>Discount Slab</u></th>
+					</tr>
+					<tr>	
+				 		<td colspan="2">&nbsp;</td>
+						<td>Price<sup>*<sup></td>
+				 		<td><div class="label-field"><%= f.text_field :centers_price,:readOnly => true,:id => "centers_price" %></div></td>
+					</tr>
+					<tr>
+						<td colspan="2">&nbsp;</td>
+						<td>Cost<sup>*<sup></td>
+				 		<td><div class="label-field"><%= f.text_field :centers_cost,:id => "centers_cost",:onKeyUp => "calculate_discount(this.value,id,'centers_price','centers_discount_amt','centers_discount_per')",:onFocusOut=>"check_amount(this.value,id,'centers_price','centers_discount_amt','centers_discount_per')" %></div></td>
+				 	</tr>
+				 	<tr>
+						<td colspan="2">&nbsp;</td>
+			  			<td>Discount(%)</td>
+				 		<td><div class="label-field"><%= f.text_field :centers_discount_per,:id => "centers_discount_per" %></div></td>
+					</tr>
+					<tr>
+						<td colspan="2">&nbsp;</td>
+						<td>Discount Amount<sup>*<sup></td>
+				 		<td><div class="label-field"><%= f.text_field :centers_discount_amt,:readOnly => true,:id => "centers_discount_amt" %></div></td>
+						<td><a href="javascript:void(0)" onClick="fill_amount_in_child('collection_center_charges','c','centers_discount_per','centers_price','centers_discount_amt','centers_cost')">Add Amount</a></td>
+					</tr>
+				</table>
+				<div id="table_wrapper">
+					<div id="header_ind">
+						<div id="head2">Check<%= check_box :status,'', :id => "check_all",:onChange=>"check_all_check_boxs(id,'collection_center_charges','c')" %></div>
+						<div id="head2">S.No</div>	
+					 	<div id="head4">Id</div>
+						<div id="head5">Name</div>
+						<div id="head4">Price</div>
+						<div id="head4">Discount(%)</div>
+						<div id="head4">Discount Amt</div>
+						<div id="head4">Cost</div>
+						<div id="head3">Del</div>
+					</div>
+					<div id="tbody">
+						  <table id="collection_center_charges" class="fixed">
+								<% i=0 %>
+								<% f.fields_for :collection_centers_charges do |c| %>	
+									<tr>
+										<% if(i<@collection_centers.length) %>
+											<td class="td2 child_table" align="center"><%= check_box :status,'', :id => "c"+i.to_s %></td>
+										<% else %>
+											<td class="td2 child_table">&nbsp;</td>
+										<% end %>	
+										<td class="td2 child_table"><%= c.text_field :s_no,:id =>"c#{i}c1", :class => "text_field_child",:readOnly => true %></td>
+										<td class="td4 child_table"><%= c.text_field :center_id,:id =>"c#{i}c2", :class => "text_field_child",:readOnly => true %></td>
+										<td class="td5 child_table"><%= c.text_field :name,:id =>"c#{i}c3", :class => "text_field_child",:readOnly => true %></td>
+										<td class="td4 child_table"><%= c.text_field :price,:id =>"c#{i}c4", :class => "text_field_child" %></td>
+										<td class="td4 child_table"><%= c.text_field :discount_per,:id =>"c#{i}c5", :class => "text_field_child",:onKeyUp=>"calculate_discount_amount_ind('#{i}','c',this.value)" %></td>
+										<td class="td4 child_table"><%= c.text_field :discount_amt,:id =>"c#{i}c6", :class => "text_field_child" %></td>
+										<td class="td4 child_table"><%= c.text_field :cost,:id =>"c#{i}c7", :class => "text_field_child",:readOnly => true %></td>
+										<td class="td3 child_table">&nbsp;</td>
+									</tr>
+									<% i=i+1 %>
+								<% end %>
+						 </table>
+					</div>
+				</div>
+			</div>
+			<div>
+				<table align="center" width="90%">
+					<tr>
+						<td>Type</td>
+						<td><div class="text-input-bg"><%= f.select :referral_type,[['Referral Doctor'],['Consulting Clinics']],{:prompt => true},{:id =>"test_name",:onChange => ""} %></div></td>
+						<th colspan="2" style="color:blue;"><u>Commission Slab</u></th>
+					</tr>
+					<tr>
+						<td colspan="2">&nbsp;</td>
+						<td>Price<sup>*<sup></td>
+				 		<td><div class="label-field"><%= f.text_field :referrals_price,:readOnly => true,:id => "referrals_price" %></div></td>
+					</tr>
+					<tr>
+						<td colspan="2">&nbsp;</td>
+			  			<td>Cost<sup>*<sup></td>
+				 		<td><div class="label-field"><%= f.text_field :referrals_cost,:id => "referralrs_cost",:onKeyUp => "calculate_discount(this.value,id,'referrals_price','referrals_commission_amt','referrals_commission_per')",:onFocusOut=>"check_amount(this.value,id,'centers_price','centers_discount_amt','centers_discount_per')" %></div></td>
+					</tr>
+					<tr>
+						<td colspan="2">&nbsp;</td>
+			  			<td>Commission(%)</td>
+				 		<td><div class="label-field"><%= f.text_field :referrals_commission_per,:id => "referrals_commission_per" %></div></td>
+					</tr>
+					<tr>
+						<td colspan="2">&nbsp;</td>
+						<td>Commission Amount<sup>*<sup></td>
+				 		<td><div class="label-field"><%= f.text_field :referrals_commission_amt,:readOnly => true,:id => "referrals_commission_amt" %></div></td>
+						<td><a href="javascript:void(0)" onClick="fill_amount_in_child('referral_charges','r','referrals_commission_per','referrals_price','referrals_commission_amt','referralrs_cost')">Add Amount</a></td>
+					</tr>
+				</table>
+				<div id="table_wrapper">
+					<div id="header_ind">
+						<div id="head2">Check<%= check_box :status,'', :id => "check_all_ref",:onChange=>"check_all_check_boxs(id,'referral_charges','r')" %></div>
+						<div id="head2">S.No</div>	
+					 	<div id="head4">Id</div>
+						<div id="head4">Name</div>
+						<div id="head4">Price</div>
+						<div id="head4">Commission(%)</div>
+						<div id="head5">Commission Amt</div>
+						<div id="head4">Cost</div>
+						<div id="head3">Del</div>
+					</div>
+					<div id="tbody">
+						  <table id="referral_charges" class="fixed">
+								<% i=0 %>
+								<% f.fields_for :referral_charges do |r| %>	
+									<tr>
+										<% if(i<@referral_clinics.length) %>
+											<td class="td2 child_table" align="center"><%= check_box :status,'', :id => "r"+i.to_s %></td>
+										<% else %>
+											<td class="td2 child_table">&nbsp;</td>
+										<% end %>	
+										<td class="td2 child_table"><%= r.text_field :s_no,:id =>"r#{i}c1", :class => "text_field_child",:readOnly => true %></td>
+										<td class="td4 child_table"><%= r.text_field :referral_id,:id =>"r#{i}c2", :class => "text_field_child",:readOnly => true %></td>
+										<td class="td4 child_table"><%= r.text_field :name,:id =>"r#{i}c3", :class => "text_field_child",:readOnly => true %></td>
+										<td class="td4 child_table"><%= r.text_field :price,:id =>"r#{i}c4", :class => "text_field_child" %></td>
+										<td class="td4 child_table"><%= r.text_field :commission_per,:id =>"r#{i}c5", :class => "text_field_child" %></td>
+										<td class="td5 child_table"><%= r.text_field :commission_amt,:id =>"r#{i}c6", :class => "text_field_child" %></td>
+										<td class="td4 child_table"><%= r.text_field :cost,:id =>"r#{i}c7", :class => "text_field_child",:readOnly => true %></td>
+										<td class="td3 child_table">&nbsp;</td>
+									</tr>
+									<% i=i+1 %>
+								<% end %>
+						 </table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			$(function() {
+    			// setup ul.tabs to work as tabs for each div directly under div.panes
+    			$("ul.tabs").tabs("div.panes > div");
+			});
+	</script><br/>
+	 <center>
+		<td><%=f.submit 'Save',:class => "preview" %><span id = "creating_events" style = "display:none;">Creating, Please wait...</span></td>
+	</center>
+<% end %>

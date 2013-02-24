@@ -1,0 +1,32 @@
+<h1>Listing collection_centers_charges</h1>
+
+<table>
+  <tr>
+    <th>S no</th>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Discount per</th>
+    <th>Discount amt</th>
+    <th>Cost</th>
+  </tr>
+
+<% @collection_centers_charges.each do |collection_centers_charge| %>
+  <tr>
+    <td><%=h collection_centers_charge.s_no %></td>
+    <td><%=h collection_centers_charge.id %></td>
+    <td><%=h collection_centers_charge.name %></td>
+    <td><%=h collection_centers_charge.price %></td>
+    <td><%=h collection_centers_charge.discount_per %></td>
+    <td><%=h collection_centers_charge.discount_amt %></td>
+    <td><%=h collection_centers_charge.cost %></td>
+    <td><%= link_to 'Show', collection_centers_charge %></td>
+    <td><%= link_to 'Edit', edit_collection_centers_charge_path(collection_centers_charge) %></td>
+    <td><%= link_to 'Destroy', collection_centers_charge, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New collection_centers_charge', new_collection_centers_charge_path %>

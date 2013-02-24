@@ -1,0 +1,11 @@
+if @test_master
+  if(!@test_master.test_name.blank?)
+	@test_master.test_name=@test_master.test_name.capitalize.strip
+  end
+  if !@test_master.save
+  	page.alert @test_master.errors.full_messages(',').join("\n")
+  else
+	page.alert("Record create sucessfully")
+	page << "window.location.reload()"
+  end
+end

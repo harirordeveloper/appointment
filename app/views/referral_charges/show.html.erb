@@ -1,0 +1,38 @@
+<p>
+  <b>S no:</b>
+  <%=h @referral_charge.s_no %>
+</p>
+
+<p>
+  <b>Id:</b>
+  <%=h @referral_charge.id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @referral_charge.name %>
+</p>
+
+<p>
+  <b>Price:</b>
+  <%=h @referral_charge.price %>
+</p>
+
+<p>
+  <b>Commision per:</b>
+  <%=h @referral_charge.commision_per %>
+</p>
+
+<p>
+  <b>Commision amt:</b>
+  <%=h @referral_charge.commision_amt %>
+</p>
+
+<p>
+  <b>Cost:</b>
+  <%=h @referral_charge.cost %>
+</p>
+
+
+<%= link_to 'Edit', edit_referral_charge_path(@referral_charge) %> |
+<%= link_to 'Back', referral_charges_path %>

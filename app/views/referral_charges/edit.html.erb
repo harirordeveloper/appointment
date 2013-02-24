@@ -1,0 +1,40 @@
+<h1>Editing referral_charge</h1>
+
+<% form_for(@referral_charge) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :s_no %><br />
+    <%= f.text_field :s_no %>
+  </p>
+  <p>
+    <%= f.label :id %><br />
+    <%= f.text_field :id %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :price %><br />
+    <%= f.text_field :price %>
+  </p>
+  <p>
+    <%= f.label :commision_per %><br />
+    <%= f.text_field :commision_per %>
+  </p>
+  <p>
+    <%= f.label :commision_amt %><br />
+    <%= f.text_field :commision_amt %>
+  </p>
+  <p>
+    <%= f.label :cost %><br />
+    <%= f.text_field :cost %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @referral_charge %> |
+<%= link_to 'Back', referral_charges_path %>

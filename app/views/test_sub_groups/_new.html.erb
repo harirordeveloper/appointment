@@ -1,0 +1,41 @@
+<center><font color='blue'><strong>Creating Test Sub Group</strong></font></center>
+<% remote_form_for @test_sub_group, :url => {:controller=>"/newlab/test_sub_groups", :action => :create}, :before => "$('#creating_events').show();", :complete => "$('#creating_events').hide();" do |f| %>
+ 
+  <ul class="tabs">
+    <li><a href="#">Test Group.Info</a></li>
+  </ul>
+  <div class="panes">
+    <div>
+  		<table align="center" width="100%">
+    		<tr>  
+            <td>Branch Name<sup>*<sup></td>
+            <td><div class="label-field"><%= f.text_field :branch_code,:readOnly => true %></div></td>
+            <td>Branch Loc.</td>
+            <td><div class="label-field"><%= f.text_field :branch_location,:readOnly => true %></div></td>
+            <td>Discontinued</td>
+            <td><%= f.check_box :discontinued %></td>
+    		</tr>
+    		<tr>
+	         <td>Group Name<sup>*<sup></td>
+				<% @groups=TestGroup.all(:conditions => "branch_code='#{@person.branch_name}' and discontinued!='1'",:order=>"group_name ASC") %>
+            <td><div class="text-input-bg"><%= f.select :test_group_id, @groups.map {|u| [u.group_name,u.id]},{:prompt => true},{:id => "group"} %></div></td>
+            <td>Sub Group Id<sup>*<sup></td>
+            <td><div class="label-field"><%= f.text_field :sub_group_id %></div></td>
+	         <td>Sub Group Name<sup>*<sup></td>
+            <td><div class="label-field"><%= f.text_field :sub_group_name %></div></td>
+   		</tr>
+       </table>
+<br/>
+</div>
+</div>
+<br/>
+   <center>
+    <td><%=f.submit 'Save',:class => "preview" %><span id = "creating_events" style = "display:none;">Creating, Please wait...</span></td>
+  </center>
+    <script>
+      $(function() {
+          // setup ul.tabs to work as tabs for each div directly under div.panes
+          $("ul.tabs").tabs("div.panes > div");
+      });
+  </script>
+<% end %>

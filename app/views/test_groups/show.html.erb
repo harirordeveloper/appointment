@@ -1,0 +1,28 @@
+<p>
+  <b>Branch code:</b>
+  <%=h @test_group.branch_code %>
+</p>
+
+<p>
+  <b>Branch location:</b>
+  <%=h @test_group.branch_location %>
+</p>
+
+<p>
+  <b>Discontinued:</b>
+  <%=h @test_group.discontinued %>
+</p>
+
+<p>
+  <b>Group:</b>
+  <%=h @test_group.group_id %>
+</p>
+
+<p>
+  <b>Group name:</b>
+  <%=h @test_group.group_name %>
+</p>
+
+
+<%= link_to 'Edit', edit_test_group_path(@test_group) %> |
+<%= link_to 'Back', test_groups_path %>

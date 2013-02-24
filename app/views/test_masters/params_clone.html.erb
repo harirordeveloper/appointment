@@ -1,0 +1,63 @@
+
+<%= stylesheet_link_tag 'nandi_stylesheets/look_up/jquery-ui' %>
+<%= javascript_include_tag 'nandi_javascripts/lookup/jquery.min.js' %>
+<%= javascript_include_tag 'nandi_javascripts/lookup/jquery-ui.min.js' %> 
+  <script type="text/javascript"> 
+	//Ajax Code
+	function Ajax_Code(test_id)
+	{
+		var openerWindow = window.opener;
+		openerWindow.get_test1(test_id)
+		self.close();
+	}
+</script>
+  <script>
+  $(document).ready(function() {
+    $("input#test_name").autocomplete({
+    source: [
+			<% for test_master in @test_master %>
+				'<%= test_master.test_name %>==><%= test_master.test_id %>',
+			<% end %>
+			]
+	});
+  });
+  </script>
+   <script language="javascript" type="text/javascript">
+	function stopRKey(evt) {
+		
+		var evt  = (evt) ? evt : ((event) ? event : null);
+		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+		
+		if ((evt.keyCode == 13) && (node.type=="text")) { return false; }
+	}
+	document.onkeypress = stopRKey;
+</script>
+
+<script type="text/javascript">
+	
+	function get_test_list(test,event)
+	{
+		if(event.keyCode==13)
+		{
+					jQuery.ajax({
+				  	url: "/newlab/test_masters/test_search_result/1?test_name="+test,
+					     	type: "POST",
+				   	success: function(result){  
+										document.getElementById("test_list").innerHTML=result;
+				    },
+				    error: function(){
+					  alert('Error occured');
+				    }
+			      });
+		}
+	}
+</script>
+<table align="center" style="margin-top: 35px;">
+	<tr>
+		<td>Test Name<sup>*<sup></td>
+		<td colspan="4"><div class="label-field-big"><%= text_field('test_name','',:id=>"test_name", :onKeyUp => "get_test_list(this.value,event)") %></div></td>
+	</tr>
+</table>
+<br/>
+<div id="test_list">
+</div>

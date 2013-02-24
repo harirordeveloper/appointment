@@ -1,0 +1,8 @@
+if @test_group
+  if !@test_group.update_attributes(params[:test_group])
+  	page.alert @test_group.errors.full_messages(',').join("\n")
+  else
+	page.alert("Record update sucessfully")
+	page << "window.location.reload()"
+  end
+end

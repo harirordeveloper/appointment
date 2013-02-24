@@ -1,0 +1,11 @@
+if @test_group
+  if(!@test_group.group_name.blank?)
+	@test_group.group_name=(@test_group.group_name.upcase).strip
+  end
+  if !@test_group.save
+  	page.alert @test_group.errors.full_messages(',').join("\n")
+  else
+	page.alert("Record create sucessfully")
+	page << "window.location.reload()"
+  end
+end

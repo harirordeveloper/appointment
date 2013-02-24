@@ -1,0 +1,32 @@
+<h1>Listing referral_charges</h1>
+
+<table>
+  <tr>
+    <th>S no</th>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Commision per</th>
+    <th>Commision amt</th>
+    <th>Cost</th>
+  </tr>
+
+<% @referral_charges.each do |referral_charge| %>
+  <tr>
+    <td><%=h referral_charge.s_no %></td>
+    <td><%=h referral_charge.id %></td>
+    <td><%=h referral_charge.name %></td>
+    <td><%=h referral_charge.price %></td>
+    <td><%=h referral_charge.commision_per %></td>
+    <td><%=h referral_charge.commision_amt %></td>
+    <td><%=h referral_charge.cost %></td>
+    <td><%= link_to 'Show', referral_charge %></td>
+    <td><%= link_to 'Edit', edit_referral_charge_path(referral_charge) %></td>
+    <td><%= link_to 'Destroy', referral_charge, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New referral_charge', new_referral_charge_path %>

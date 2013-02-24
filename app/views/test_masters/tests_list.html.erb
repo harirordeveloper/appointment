@@ -1,0 +1,69 @@
+<br/>
+<table cellpadding="0" cellspacing="0" border="0" align="right">
+	<tr>
+			<td><a href="/newlab/home?session_id=<%= session[:id]%>"  target=_parent><%= image_tag("/images/back.png",:border => 0)%></a></td>
+	</tr>
+</table>
+<br/><br/>
+<%= stylesheet_link_tag 'index_table/jquery.dataTables_themeroller' %>
+<%= stylesheet_link_tag 'index_table/demo_page' %>
+<%= stylesheet_link_tag 'index_table/jquery-ui-1.8.4.custom' %>
+<%= javascript_include_tag 'index_table/jquery.dataTables' %>
+
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('#example3').dataTable( {
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers"
+		} );
+  	} );
+</script>
+<div id="demo">
+		<center><font color='blue' style="font-weight:bold;">Test Master List</font></center>
+	<table cellpadding="0" cellspacing="0" border="0" class="display" id="example3" width="100%">
+		<thead>
+			<tr>
+				<th>S.No</th>
+				<th>Group</th>
+				<th>Test Name</th>
+				<th>Report Days</th>
+				<th>Temp</th>
+				<th>Frequency</th>
+				<th>Sample</th>
+				
+				<th>Colle.Charge</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% i=1 %>
+			<% @test_masters.each do |test_master| %>
+			   <tr>
+				 <td><%= i %></td>
+				 <td><%=h TestGroup.find_by_sql("select group_name from test_groups where id='#{test_master.test_group_id}'")[0].group_name %></td>
+				 <td><%=h test_master.test_name %></td>
+				 <td><%=h test_master.report_collection_days %></td>
+				 <td><%=h test_master.temp %></td>
+				 <td><%=h test_master.frequency %></td>
+				 <td><%=h test_master.specimen %></td>
+				 <% @charge=ChargeMaster.find_by_test_master_id(test_master.id) %>
+				 <% if(@charge) %>
+				 	
+				 	<% charge=CollectionCentersCharge.find_by_charge_master_id_and_center_id(ChargeMaster.find_by_test_master_id(test_master.id).id,CollectionCenter.find_by_id(@person.record_id).code) %>
+					 <% if(charge) %>
+					 	<td><%=h charge.cost %></td>
+				 	<% else %>
+				 		 <td>&nbsp;</td>
+					 <% end %>
+				<% else %>
+				
+				 <td>&nbsp;</td>
+			            <% end %> 
+			  </tr>
+			
+			  <% i=i+1 %>
+			<% end %>
+		</tbody>
+		<tfoot>
+	</table>
+</div>
+<div class="spacer"></div>

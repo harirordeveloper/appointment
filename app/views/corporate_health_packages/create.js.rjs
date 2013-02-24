@@ -1,0 +1,8 @@
+if @corporate_health_package
+  if !@corporate_health_package.save
+  	page.alert @corporate_health_package.errors.full_messages(',').join("\n")
+  else
+	page.alert("Record create sucessfully")
+	page << "window.location.reload()"
+  end
+end

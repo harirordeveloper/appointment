@@ -1,0 +1,76 @@
+
+<!--To get the token input field-->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<%= javascript_include_tag "jquery.tokeninput" %>
+<%= stylesheet_link_tag "token-input-mac" %>
+<%= stylesheet_link_tag "token-input-facebook" %>
+<%= stylesheet_link_tag "token-input" %>
+<!--To get the data tables-->
+<%= javascript_include_tag "dataTables/jquery.dataTables" %>
+<%= javascript_include_tag "dataTables/jquery.dataTables.min" %>
+<%= stylesheet_link_tag "jquery.dataTables1" %>
+<%= stylesheet_link_tag "jquery.dataTables_themeroller1" %>
+<%= stylesheet_link_tag "demo_page" %>
+<%= stylesheet_link_tag "demo_table" %>
+<%= stylesheet_link_tag "demo_table_jui" %>
+<%= stylesheet_link_tag "demo_validation" %>
+
+<%= stylesheet_link_tag "adminstylesheet/child_table" %>
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#example').dataTable();
+});
+</script>
+
+<table>
+
+ 
+ <tr>
+<td width="150px" style="font-family :arial;"><%= image_tag("add.png")%><font size="4" ><%= link_to 'Add lab', new_lab_path %></font></td>
+
+<td width="850px"> </td><td><a href='<%= loginpage_path %>' target=_parent><%= image_tag("/assets/back.png",:border => 0)%></a></td></tr>
+
+</table>
+<table id="example">
+  <thead>
+   
+    <th>Name</th>
+    <th>Display Name</th>
+    <th>Branches</th>
+    <th>Expiry Date</th>
+    <th>Location</th>
+   <th>E-mail</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </thead>
+
+
+  <tbody>
+    <% @labs.each do |lab| %>
+<tr>
+    <td><%= lab.name %></td>
+    <td><%= lab.displayname %></td>
+    <td><%= lab.branches %></td>
+    <td><%= lab.expdate %></td>
+    <td><%= lab.location.name %></td>
+    <td><%= lab.email %></td>
+
+
+
+    <td><%=  link_to image_tag("/assets/show.png",:border=>"0",:title=>" Click Here to VIEW This Record",:width=>20,:height=>20), lab %></td>
+    <td><%= link_to image_tag("/assets/Edit.png",:border=>"0",:title=>" Click Here to Edit This Record",:width=>20,:height=>20) , edit_lab_path(lab) %></td>
+    <td><%= link_to image_tag("/assets/delete.png",:border=>"0",:title=>" Click Here to Delete This Record",:width=>20,:height=>20), lab, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+ </tr>
+<% end %>
+
+<br />
+
+</tbody>
+</table>
+
+

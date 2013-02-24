@@ -1,0 +1,32 @@
+<h1>Editing test_group</h1>
+
+<% form_for(@test_group) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :branch_code %><br />
+    <%= f.text_field :branch_code %>
+  </p>
+  <p>
+    <%= f.label :branch_location %><br />
+    <%= f.text_field :branch_location %>
+  </p>
+  <p>
+    <%= f.label :discontinued %><br />
+    <%= f.text_field :discontinued %>
+  </p>
+  <p>
+    <%= f.label :group_id %><br />
+    <%= f.text_field :group_id %>
+  </p>
+  <p>
+    <%= f.label :group_name %><br />
+    <%= f.text_field :group_name %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @test_group %> |
+<%= link_to 'Back', test_groups_path %>

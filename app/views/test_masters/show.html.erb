@@ -1,0 +1,55 @@
+<p>
+  <b>Branch code:</b>
+  <%=h @test_master.branch_code %>
+</p>
+
+<p>
+  <b>Branch location:</b>
+  <%=h @test_master.branch_location %>
+</p>
+
+<p>
+  <b>Discontinued:</b>
+  <%=h @test_master.discontinued %>
+</p>
+
+<p>
+  <b>Test group:</b>
+<% @test=TestGroup.find(@test_master.test_group_id) %>
+  <%=h @test.group_name %>
+</p>
+
+<p>
+  <b>Test sub group:</b>
+<% @test_sub=TestSubGroup.find(@test_master.test_sub_group_id) %>
+  <%=h @test_sub.sub_group_name %>
+</p>
+
+<p>
+  <b>Test name:</b>
+  <%=h @test_master.test_name %>
+</p>
+
+<p>
+  <b>Specimen:</b>
+  <%=h @test_master.specimen %>
+</p>
+
+<p>
+  <b>Report collection days:</b>
+  <%=h @test_master.report_collection_days %>
+</p>
+
+<p>
+  <b>Report collection time:</b>
+  <%=h @test_master.report_collection_time %>
+</p>
+
+<p>
+  <b>Investigation text details:</b>
+  <%=h @test_master.investigation_text_details %>
+</p>
+
+
+<%= link_to 'Edit', edit_test_master_path(@test_master) %> |
+<%= link_to 'Back', test_masters_path %>

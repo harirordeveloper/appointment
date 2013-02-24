@@ -1,0 +1,28 @@
+
+<table class="sofT" width="80%" id="replace" align="center">
+<thead style="background:#378bf8;">
+<tr align="center">
+
+<th>S.No</th>
+<th>parameter</th>
+<th>Normal Range</th>
+<th>Units</th>
+</tr>
+</thead>
+ <% @i=0 %>
+<% for test in @test_master %>
+<tbody style="background:#c6dfff;">
+
+  <tr>
+	<td><%= @i+=1 %></td>
+    	<td><%=h test.parameter %></td>
+    	<td><%=h test.normal_range %></td>
+	<td><%=h test.units%></td>
+	
+ </tr>
+ </tbody>
+ <% end %>
+
+<tr><td  colspan="6" align="center"><input type="button" onClick="Ajax_Code('<%= @test %>')"  class="preview" value="Ok"> </td></tr>
+
+</div>

@@ -1,0 +1,46 @@
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('#example').dataTable( {
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers"
+		} );
+  	} );
+</script>
+<div id="demo">
+		<center><font color='blue' style="font-weight:bold;">Profiles <%= @button_name.capitalize %> List</font></center>
+	<table cellpadding="0" cellspacing="0" border="0" class="display" id="example" width="100%">
+		<thead>
+			<tr>
+				<th>S.No</th>
+				<th>Department</th>
+				<th>Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% i=1 %>
+			<% @test_groups.each do |test_group| %>
+			
+			  <% if(@button_name=="edit") %>
+			  		<tr onClick="add_edit_url('<%= test_group.id %>')">
+				<% elsif(@button_name=="delete") %>
+			  		<tr onClick="if(confirm('Are you sure')) delete_record('<%= test_group.id %>');">
+				<% elsif(@button_name=="print") %>
+			  		<tr onClick="window.open('/newlab/test_groups/show/<%= test_group.id %>','open_window','dependent, width=850, height=500,top=50,left=100');">
+				<% else %>
+					<tr>
+				<% end %>
+			    <td><%= i %></td>
+				 <% if(test_group.department=="1") %>
+				 <td>Laboratory</th>
+				<% else %>
+				 <td>Radiology</th>
+				<% end %>
+			    <td><%=h test_group.group_name %></td>
+			  </tr>
+			  <% i=i+1 %>
+			<% end %>
+		</tbody>
+		<tfoot>
+	</table>
+</div>
+<div class="spacer"></div>

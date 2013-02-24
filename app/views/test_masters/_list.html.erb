@@ -1,0 +1,56 @@
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('#example3').dataTable( {
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers"
+		} );
+  	} );
+</script>
+<div id="demo">
+		<center><font color='blue' style="font-weight:bold;">Test Master <%= @button_name.capitalize %> List</font></center>
+	<table cellpadding="0" cellspacing="0" border="0" class="display" id="example3" width="100%">
+		<thead>
+			<tr>
+				<th>S.No</th>
+				<th>Group</th>
+				<th>Sub Group</th>
+				<th>Test Id</th>
+				<th>Test Name</th>
+				<th>Report Days</th>
+				<th>Report Time</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% i=1 %>
+			<% @test_masters.each do |test_master| %>
+			   <% if(@button_name=="edit") %>
+			  		<tr onClick="add_edit_url('<%= test_master.id %>')">
+			   <% elsif(@button_name=="form_edit") %>
+			  		<tr onClick="add_client_edit_url('<%= test_master.id %>')">
+				<% elsif(@button_name=="delete") %>
+			  		<tr onClick="if(confirm('Are you sure')) delete_record('<%= test_master.id %>');">
+				<% elsif(@button_name=="print") %>
+			  		<tr onClick="window.open('/newlab/test_masters/show/<%= test_master.id %>','open_window','dependent, width=850, height=500,top=50,left=100');">
+				<% else %>
+					<tr>
+				<% end %>
+			    <td><%= i %></td>
+				 <td><%=h TestGroup.find_by_sql("select group_name from test_groups where id='#{test_master.test_group_id}'")[0].group_name %></td>
+				 <% @test=TestSubGroup.find_by_sql("select sub_group_name from test_sub_groups where id='#{test_master.test_sub_group_id}'") %>
+<% if(@test[0]) %>
+		<td><%= @test[0].sub_group_name %></td>
+<% else %>
+		<td>&nbsp;</td>
+<% end %>
+				 <td><%=h test_master.test_id %></td>
+				 <td><%=h test_master.test_name %></td>
+				 <td><%=h test_master.report_collection_days %></td>
+				 <td><%=h test_master.report_collection_time %></td>
+			  </tr>
+			  <% i=i+1 %>
+			<% end %>
+		</tbody>
+		<tfoot>
+	</table>
+</div>
+<div class="spacer"></div>

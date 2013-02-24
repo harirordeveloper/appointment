@@ -1,0 +1,246 @@
+
+
+<!--To get the token input field-->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<%= javascript_include_tag "jquery.tokeninput" %>
+<%= stylesheet_link_tag "token-input-mac" %>
+<%= stylesheet_link_tag "token-input-facebook" %>
+<%= stylesheet_link_tag "token-input" %>
+<!--To get the data tables-->
+<%= javascript_include_tag "dataTables/jquery.dataTables" %>
+<%= javascript_include_tag "dataTables/jquery.dataTables.min" %>
+<%= stylesheet_link_tag "jquery.dataTables1" %>
+<%= stylesheet_link_tag "jquery.dataTables_themeroller1" %>
+<%= stylesheet_link_tag "demo_page" %>
+<%= stylesheet_link_tag "demo_table" %>
+<%= stylesheet_link_tag "demo_table_jui" %>
+<%= stylesheet_link_tag "demo_validation" %>
+
+<script>
+function select_admn_category(id)
+	{
+
+		var admn_category=document.getElementById(id).value
+		if(admn_category=="Lab Branches")
+		{
+			
+			document.getElementById('clinicbranch').style.display='none'
+			document.getElementById('labbranch').style.display='block'
+			
+		}
+		else
+		{
+			
+			document.getElementById('clinicbranch').style.display='block'
+			document.getElementById('labbranch').style.display='none'
+			
+
+			
+		}
+				
+	}
+
+</script>
+
+
+<style>
+#choos_no {
+width: 118px;
+height: 30px;
+background-color: #0078FF;
+background-image: none;
+background-position: 0 0;
+border-width: 1px 0 0 0;
+border-style: solid;
+border-color: transparent;
+border-radius: 16px;
+-moz-border-radius: 16px;
+-webkit-border-radius: 16px;
+font: bold 13px Arial;
+color: white;
+text-decoration: none;
+text-shadow: 0 1px 1px black;
+cursor: pointer;
+}
+
+#choos_yes {
+width: 118px;
+height: 30px;
+background-color: #0078FF;
+background-image: none;
+background-position: 0 0;
+border-width: 1px 0 0 0;
+border-style: solid;
+border-color: transparent;
+border-radius: 16px;
+-moz-border-radius: 16px;
+-webkit-border-radius: 16px;
+font: bold 13px Arial;
+color: white;
+text-decoration: none;
+text-shadow: 0 1px 1px black;
+cursor: pointer;
+}
+
+</style>
+
+<table style="padding-top: 28px;padding-left: 457PX;">
+<tr>
+<td>
+<input type="submit" value="Clinic Branches" name="Clinic Branches" id="choos_no" onClick="select_admn_category(id)">
+</td>
+<td>
+<input type="submit" value="Lab Branches" name="Lab Branches" id="choos_yes" onClick="select_admn_category(id)">
+</td>
+</tr>
+</table>
+
+
+
+<%= stylesheet_link_tag "adminstylesheet/child_table" %>
+</head>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#example2').dataTable();
+});
+</script>
+
+
+
+
+<!--   BACK BUTTON TABLE STARTS HERE -->
+
+<div id="clinicbranch" style="display:block;">
+
+<table>
+
+ <tr><td width="950px"> </td><td><a href='<%= loginpage_path %>' target=_parent><%= image_tag("/assets/back.png",:border => 0)%></a></td></tr>
+
+</table>
+
+<!--   BACK BUTTON TABLE ENDS HERE -->
+
+
+<table id="example2">
+  <thead> 
+    
+    <th>Name</th>
+    <th>Display Name</th>
+    <th>Branches</th>
+    <th>Expiry Date</th>
+    <th>Address1</th>
+    <th>Location</th>
+    <th>Landmarks</th>
+    <th>E-mail</th>
+   
+   
+    <th  width=100px ></th>
+    
+ </thead> 
+
+
+  <tbody>
+   <% @clinicbranches.each do |clinicbranch| %>
+    <tr>
+    <td><%= clinicbranch.name %></td>
+    <td><%= clinicbranch.displayname %></td>
+    <td><%= clinicbranch.branches %></td>
+  
+    <td><%= clinicbranch.expdate %></td>
+    <td><%= clinicbranch.address1 %></td>
+  
+    <td><%= clinicbranch.location_id %></td>
+    <td><%= clinicbranch.landmarks %></td>
+    
+    <td><%= clinicbranch.email %></td>
+   
+   
+    <td width="80px"><%= link_to image_tag("/assets/show.png",:border=>"0",:title=>" Click Here to Edit This Record",:width=>20,:height=>20), clinicbranch %>
+
+
+ <%= link_to image_tag("/assets/Edit.png",:border=>"0",:title=>" Click Here to Edit This Record",:width=>20,:height=>20) , edit_clinicbranch_path(clinicbranch) %>
+
+   <%= link_to image_tag("/assets/delete.png",:border=>"0",:title=>" Click Here to Delete This Record",:width=>20,:height=>20), clinicbranch, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+  </tr>
+<% end %>
+</br>
+</tbody>
+</table>
+
+</div>
+
+
+<div id="labbranch" style="display:none;">
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#example1').dataTable();
+});
+</script>
+
+
+<!--   BACK BUTTON TABLE STARTS HERE -->
+
+<table>
+
+ <tr><td width="950px"> </td><td><a href='<%= loginpage_path %>' target=_parent><%= image_tag("/assets/back.png",:border => 0)%></a></td></tr>
+
+</table>
+
+<!--   BACK BUTTON TABLE ENDS HERE -->
+
+
+<table id="example1">
+  <thead> 
+    
+    <th>Name</th>
+    <th>Display Name</th>
+    
+    <th>Expiry Date</th>
+    <th>Address</th>
+    <th>Location</th>
+    <th>Landmarks</th>
+    <th>Email</th>
+   
+   
+    <th ></th>
+    
+ </thead> 
+
+
+  <tbody>
+   <% @labbranches.each do |labbranch| %>
+    <tr>
+    <td><%= labbranch.name %></td>
+    <td><%= labbranch.displayname %></td>
+   
+  
+    <td><%= labbranch.expdate %></td>
+    <td><%= labbranch.address1 %></td>
+  
+    <td><%= labbranch.location_id %></td>
+    <td><%= labbranch.landmarks %></td>
+    
+    <td><%= labbranch.email %></td>
+   
+   
+    <td width="80px"><%= link_to image_tag("/assets/show.png",:border=>"0",:title=>" Click Here to Edit This Record",:width=>20,:height=>20), labbranch %>
+
+
+ <%= link_to image_tag("/assets/Edit.png",:border=>"0",:title=>" Click Here to Edit This Record",:width=>20,:height=>20) , edit_labbranch_path(labbranch) %>
+
+    <%= link_to image_tag("/assets/delete.png",:border=>"0",:title=>" Click Here to Delete This Record",:width=>20,:height=>20), labbranch, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+  </tr>
+<% end %>
+</br>
+</tbody>
+</table>
+
+
+</div>
+
+

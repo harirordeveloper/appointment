@@ -1,0 +1,47 @@
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('#example').dataTable( {
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers"
+		} );
+  	} );
+</script>
+<div id="demo">
+		<center><font color='blue' style="font-weight:bold;">Test Sub-Groups <%= @button_name.capitalize %> List</font></center>
+	<table cellpadding="0" cellspacing="0" border="0" class="display" id="example" width="100%">
+		<thead>
+			<tr>
+				<th>S.No</th>
+				<th>Branch Code</th>
+				<th>Branch Location</th>
+				<th>Group</th>
+				<th>Sub Group Id</th>
+				<th>Sub Group Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% i=1 %>
+			<% @test_sub_groups.each do |test_sub_group| %>
+			  <% if(@button_name=="edit") %>
+			  		<tr onClick="add_edit_url('<%= test_sub_group.id %>')">
+				<% elsif(@button_name=="delete") %>
+			  		<tr onClick="if(confirm('Are you sure')) delete_record('<%= test_sub_group.id %>');">
+				<% elsif(@button_name=="print") %>
+			  		<tr onClick="window.open('/newlab/test_sub_groups/show/<%= test_sub_group.id %>','open_window','dependent, width=850, height=500,top=50,left=100');">
+				<% else %>
+					<tr>
+				<% end %>
+			    <td><%= i %></td>
+			    <td><%=h test_sub_group.branch_code %></td>
+			    <td><%=h test_sub_group.branch_location %></td>
+			    <td><%=h TestGroup.find_by_sql("select group_name from test_groups where id='#{test_sub_group.test_group_id}'")[0].group_name %></td>
+			    <td><%=h test_sub_group.sub_group_id %></td>
+			    <td><%=h test_sub_group.sub_group_name %></td>
+			  </tr>
+			  <% i=i+1 %>
+			<% end %>
+		</tbody>
+		<tfoot>
+	</table>
+</div>
+<div class="spacer"></div>

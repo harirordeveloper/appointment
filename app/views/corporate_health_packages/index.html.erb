@@ -1,0 +1,75 @@
+
+<script type="text/javascript">
+	function add_url_to_div()
+	{
+		jQuery.ajax({
+          	url: "/newlab/corporate_health_packages/new",
+		     	type: "POST",
+           	success: function(result){  
+                 	jQuery("#display_records").html(result);
+            },
+            error: function(){
+                  alert('Error occured');
+            }
+      });
+	}	
+
+   function add_list_url(button_name)
+	{
+		jQuery.ajax({
+          	url: "/newlab/corporate_health_packages/list/1?button_name="+button_name,
+		     	type: "POST",
+           	success: function(result){  
+                 	jQuery("#display_records").html(result);
+            },
+            error: function(){
+                  alert('Error occured');
+            }
+      });
+
+	}
+
+   function add_edit_url(id)
+	{
+		jQuery.ajax({
+          	url: "/newlab/corporate_health_packages/edit/"+id,
+		     	type: "POST",
+           	success: function(result){  
+                 	jQuery("#display_records").html(result);
+            },
+            error: function(){
+                  alert('Error occured');
+            }
+      });
+
+	}
+
+	function delete_record(id)
+	{
+		jQuery.ajax({
+          	url: "/newlab/corporate_health_packages/destroy/"+id+"?button_name=delete",
+		     	type: "POST",
+           	success: function(result){  
+                 	jQuery("#display_records").html(result);
+            },
+            error: function(){
+                  alert('Error occured');
+            }
+      });
+	}
+</script>
+
+<table cellpadding="0" cellspacing="0" border="0"  style="margin-top: 18px;">
+	<tr>
+		<td><%= submit_tag "", :value => "Add", :class => "preview",:onClick => "add_url_to_div()" %></td>
+		<td><%= submit_tag "", :value => "Edit", :class => "preview",:onClick => "add_list_url('edit')" %></td>
+		<td><%= submit_tag "", :value => "Delete", :class => "preview",:onClick => "add_list_url('delete')" %></td>
+		<td><%= submit_tag "", :value => "Print", :class => "preview",:onClick => "add_list_url('print')" %></td>
+		<td><% submit_tag "", :value => "List", :class => "preview",:onClick => "add_list_url('')" %></td>
+		<td width="650px">&nbsp;</td>
+		<td><a href="/newlab/home?session_id=<%= session[:id]%>"  target=_parent><%= image_tag("/images/back.png",:border => 0)%></a></td>
+	</tr>
+</table>
+<div id="display_records" style="margin:0px;padding:0;background:transparent">
+	<%= render "new" %>
+</div>

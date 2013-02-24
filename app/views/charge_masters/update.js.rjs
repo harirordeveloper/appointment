@@ -1,0 +1,8 @@
+if @charge_master
+  if !@charge_master.update_attributes(params[:charge_master])
+  	page.alert @charge_master.errors.full_messages(',').join("\n")
+  else
+	page.alert("Record update sucessfully")
+	page << "window.location.reload()"
+  end
+end

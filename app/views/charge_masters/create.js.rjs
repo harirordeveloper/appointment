@@ -1,0 +1,8 @@
+if @charge_master
+  if !@charge_master.save
+  	page.alert @charge_master.errors.full_messages(',').join("\n")
+  else
+	page.alert("Record create sucessfully")
+	page << "window.location.reload()"
+  end
+end

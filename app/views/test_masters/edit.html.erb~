@@ -1,0 +1,165 @@
+<script type="text/javascript">
+	function get_sub_groups(id)
+	{
+		jQuery.ajax({
+          	url: "/charge_masters/get_sub_groups/"+id,
+		     	type: "POST",
+           	success: function(result){  
+					var sub_groups=result.split("<division>")
+               document.getElementById('sub_group_name').length=0
+					var opt = document.createElement('option');
+					document.getElementById('sub_group_name').options.add(opt);
+					opt.text ="Please select"
+					for(j=0;j<sub_groups.length-1;j++)
+					{
+						var ids=sub_groups[j].split("<sub_division>")
+						var opt = document.createElement('option');
+						document.getElementById('sub_group_name').options.add(opt);
+						opt.text =ids[0]
+						opt.value=ids[1]
+					}
+            },
+            error: function(){
+                  alert('Error occured');
+            }
+      });
+	}
+	
+	function select_frequency()
+	{
+		document.getElementById("frequency").value="";
+		if(document.getElementById("c0").checked)
+		{
+			document.getElementById("frequency").value="Daily";
+			for(i=1;i<=7;i++)
+				document.getElementById("c"+i).checked=false;
+			return;
+		}
+		for(i=1;i<=7;i++)
+		{
+			if(document.getElementById("c"+i).checked)
+			{
+				if(document.getElementById("frequency").value=="")
+					document.getElementById("frequency").value=i;
+				else
+					document.getElementById("frequency").value=document.getElementById("frequency").value+","+i;			
+			}	
+		}
+	}
+</script>
+
+
+<center><font color='blue'><strong>Test Master New Record</strong></font></center>
+<% remote_form_for @test_master, :url => {:action => :update,:id=>@test_master.id}, :before => "$('#creating_events').show();", :complete => "$('#creating_events').hide();" do |f| %>
+	<ul class="tabs">
+			<li><a href="#">General.Info</a></li>
+		</ul>
+		<div class="panes">
+			<div>
+			  <table align="center" width="95%">
+					
+			  		<tr>
+			   		<td>Branch Name<sup>*<sup></td>
+				 		<td><div class="label-field"><%= f.text_field :branch_code,:readOnly => true, :id =>"branch_code" %></div></td>
+			  			<td>Branch.Loc</td>
+				 		<td><div class="label-field"><%= f.text_field :branch_location,:readOnly => true %></div></td>
+			  			<td>Discontinued</td>
+				 		<td><%= f.check_box :discontinued %></td>
+					</tr>
+			  		<tr>
+						<td>Group<sup>*<sup></td>
+						<td><div class="text-input-bg"><%= f.select :test_group_id, TestGroup.find(:all,:conditions => "branch_code='#{@person.branch_name}' and discontinued!='1'").collect{|p| [p.group_name,p.id]},{:prompt => true},{:id =>"group_name",:onChange => "if(this.value){get_sub_groups(this.value);}"} %></div></td>
+			  		 	<td>Sub Group<sup>*<sup></td>
+						<td><div class="text-input-bg"><%= f.select :test_sub_group_id, TestSubGroup.find(:all,:conditions => "branch_code='#{@person.branch_name}' and discontinued!='1'").collect{|p| [p.sub_group_name,p.id]},{:prompt => true},{:id =>"sub_group_name"} %></div></td>
+					</tr>
+					<tr>
+						<td>Test Id<sup>*<sup></td>
+						<td><div class="label-field"><%= f.text_field :test_id, :id=>"test_id",:readOnly => true %></div></td>
+			  			<td>Test Name<sup>*<sup></td>
+						<td><div class="label-field"><%= f.text_field :test_name, :id=>"test_name" %></div></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							 <div id="table_wrapper">
+							 <div id="header_ind">
+								 	<div id="head4">S.No</div>	
+								 	<div id="head5">Parameter</div>
+									<div id="head5">Cotent Type</div>
+									<div id="head5">Normal Range</div>
+									<div id="head5">Units</div>
+									<div id="head3">Del</div>
+							 </div>
+							 <div id="tbody">
+								  <table id="scroll_table" class="fixed">
+										<% i=0 %>
+										<% f.fields_for :test_master_children do |r| %>	
+											<tr>
+												<td class="td4 child_table"><%= r.text_field :s_no,:id =>"r#{i}c1", :class => "text_field_child" %></td>
+												<td class="td5 child_table"><%= r.text_field :parameter,:id =>"r#{i}c2", :class => "text_field_child" %></td>
+												<td class="td5 child_table"><%= r.text_field :content_type,:id =>"r#{i}c3", :class => "text_field_child" %></td>
+												<td class="td5 child_table"><%= r.text_field :normal_range,:id =>"r#{i}c4", :class => "text_field_child" %></td>
+												<td class="td5 child_table"><%= r.text_field :units,:id =>"r#{i}c5", :class => "text_field_child" %></td>
+												<td class="td3 child_table">&nbsp;</td>
+											</tr>
+											<% i=i+1 %>
+										<% end %>
+									 </table>
+							 </div>
+						</div>
+						</td>
+					</tr>
+					<tr>
+			  			<td>Specimen</td>
+				 		<td colspan="5"><div class="label-field-big"><%= f.text_field :specimen %></div></td>
+					</tr>
+					<tr>
+						<td>Report Collection Days</td>
+				 		<td><div class="label-field"><%= f.text_field :report_collection_days %></div></td>
+						<td>Frequency</td>
+						<td rowspan="3" ><div style="border:1px solid;width:300px" align="center"><table>
+								<% i=0 %>
+								<% days=['Daily','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'] %>
+								<% for j in 0..7 %>
+										<% if(i%2==0) %>
+											<tr>
+										<% end %>
+											<td><%= check_box :status,'', :id => "c"+i.to_s,:onChange=>"select_frequency()" %></td>
+											<td><%= text_field :day_name,'', :style => "border:0px;",:readOnly => true, :size => "14px",:value=>days[j] %></td>
+											<% i=i+1 %>
+										<% if(i%2==0) %>
+											</tr>
+										<% end %>
+								<% end %>
+							</table></div>
+						</td>
+					</tr>
+					<tr>				 		
+			 	 		<td>Report Collection Time</td>
+				 		<td><div class="label-field"><%= f.text_field :report_collection_time %></div></td>
+			  		</tr>
+			  		<tr>				 		
+			 	 		<td>Temp</td>
+				 		<td><div class="text-input-bg"><%= f.select :temp,[['R'],['A'],['A/R'],['R/F'],['F'],['F/R'],['N/A'],['N/R'],['NA'],['A/F']],{:prompt => true},{:id =>"temp"} %></div></td>
+			  		</tr>
+			  		<tr>
+				 		<td>Method</td>
+				 		<td colspan="5"><div class="label-field-big"><%= f.text_field :method %></div></td>
+			  		</tr>
+			  		<tr>
+				 		<td>Investigation Details</td>
+				 		<td colspan="5"><div class="label-field-big"><%= f.text_field :investigation_text_details %></div></td>
+			  		</tr>
+				</table>
+				<br/>
+				<center>
+					<td><%=f.submit 'Update',:class => "preview" %><span id = "creating_events" style = "display:none;">Creating, Please wait...</span></td>
+				</center>
+			</div>
+		</div>
+		<script>
+			$(function() {
+    			// setup ul.tabs to work as tabs for each div directly under div.panes
+    			$("ul.tabs").tabs("div.panes > div");
+			});
+	</script>
+<% end %>

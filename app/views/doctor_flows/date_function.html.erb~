@@ -1,0 +1,18 @@
+
+
+
+
+
+<%= @date %>
+<%= @date_times %>
+<%= @date_times1 %>
+<h2> Morning Time  </h2>
+
+<%= @date_all %>
+
+<h3> EVENING TIME </h3>
+
+<%= @date_all1%>
+ 
+
+
