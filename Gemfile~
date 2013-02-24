@@ -46,6 +46,10 @@ gem "galetahub-simple_captcha", :require => "simple_captcha"
 gem 'twilio-ruby'
 
  gem 'rb-readline'
+ 
+ group :production do 
+ gem 'pg'
+ end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
